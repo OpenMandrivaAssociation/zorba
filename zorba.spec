@@ -12,7 +12,7 @@
 Summary:	A general purpose XQuery processor implementing in C++
 Name:		zorba
 Version:	0.9.21
-Release:	%mkrel 3
+Release:	%mkrel 4
 Group:		System/Libraries
 License:	Apache License
 URL:		http://www.zorba-xquery.com/
