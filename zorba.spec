@@ -17,6 +17,7 @@ Group:		System/Libraries
 License:	Apache License
 URL:		http://www.zorba-xquery.com/
 Source0:	http://downloads.sourceforge.net/zorba/%{name}-%{version}.tar.gz
+Patch0:		zorba-missing-includes.patch
 BuildRequires:	boost-devel >= 1.32
 BuildRequires:	cmake >= 2.4 
 BuildRequires:	icu-devel >= 2.6
@@ -24,7 +25,7 @@ BuildRequires:	libxml2-devel >= 2.2.16
 BuildRequires:	python-devel
 BuildRequires:	ruby-devel
 BuildRequires:	swig
-BuildRequires:	xerces-c-devel >= 2.7
+BuildRequires:	xerces-c28-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -95,6 +96,7 @@ Provides ruby module to use Zorba API
 %prep
 
 %setup -q
+%apply_patches
 
 %build
 %cmake -DCMAKE_INSTALL_DO_STRIP=0 -DCMAKE_SKIP_BUILD_RPATH=1  --debug-output ..
