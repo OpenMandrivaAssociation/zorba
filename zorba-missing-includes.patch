@@ -1,0 +1,12 @@
+Index: zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp
+===================================================================
+--- zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp
++++ zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp	2010-02-08 18:26:58.490071261 +0200
+@@ -15,6 +15,7 @@
+  */
+ #include <unicode/regex.h>
+ #include <memory>
++#include <cstdio>
+ #include "zorbatypes/xqpstring.h"
+ 
+ #ifndef ZORBA_NO_UNICODE
