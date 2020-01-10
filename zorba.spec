@@ -96,7 +96,7 @@ Provides ruby module to use Zorba API
 %prep
 
 %setup -q
-%apply_patches
+%autopatch -p1
 
 %build
 %cmake -DCMAKE_INSTALL_DO_STRIP=0 -DCMAKE_SKIP_BUILD_RPATH=1  --debug-output ..
