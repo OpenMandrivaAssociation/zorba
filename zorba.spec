@@ -26,6 +26,8 @@ BuildRequires:	pkgconfig(libxml-2.0) >= 2.2.16
 BuildRequires:	pkgconfig(xerces-c)
 BuildRequires:	pkgconfig(uuid)
 BuildRequires:	ninja
+BuildRequires:	bison
+BuildRequires:	flex
 
 %description
 Zorba is a general purpose XQuery processor implementing in C++ the W3C family
