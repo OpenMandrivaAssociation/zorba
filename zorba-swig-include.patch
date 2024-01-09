@@ -1,0 +1,24 @@
+diff --git a/swig/java/CMakeLists.txt b/swig/java/CMakeLists.txt
+--- a/swig/java/CMakeLists.txt
++++ b/swig/java/CMakeLists.txt
+@@ -22,7 +22,7 @@
+   MESSAGE(STATUS "SWIG: Generating Java API")
+ 
+   SET_SOURCE_FILES_PROPERTIES( zorba_api.i PROPERTIES CPLUSPLUS ON )
+-  INCLUDE_DIRECTORIES( ${JAVA_INCLUDE_PATH} )
++  INCLUDE_DIRECTORIES( ${JAVA_INCLUDE_PATH} ${CMAKE_CURRENT_BINARY_DIR})
+ 
+   # Apple put jni_md.h at same level as jni.h
+   IF ( NOT APPLE )
+diff --git a/swig/python/CMakeLists.txt b/swig/python/CMakeLists.txt
+--- a/swig/python/CMakeLists.txt
++++ b/swig/python/CMakeLists.txt
+@@ -16,7 +16,7 @@
+   MESSAGE (STATUS "SWIG: Generating Python API")
+ 
+   SET_SOURCE_FILES_PROPERTIES (zorba_api.i PROPERTIES CPLUSPLUS ON)
+-  INCLUDE_DIRECTORIES (${PYTHON_INCLUDE_PATH})
++  INCLUDE_DIRECTORIES (${PYTHON_INCLUDE_PATH} ${CMAKE_CURRENT_BINARY_DIR})
+   SWIG_ADD_MODULE (zorba_api_python python zorba_api.i)
+   SWIG_LINK_LIBRARIES (zorba_api_python zorba_simplestore ${PYTHON_LIBRARIES})
+ 

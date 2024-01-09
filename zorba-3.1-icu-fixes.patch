@@ -1,0 +1,88 @@
+diff -up zorba-3.1/src/store/naive/loader_dtd.cpp.omv~ zorba-3.1/src/store/naive/loader_dtd.cpp
+diff -up zorba-3.1/src/store/naive/loader_fast.cpp.omv~ zorba-3.1/src/store/naive/loader_fast.cpp
+--- zorba-3.1/src/store/naive/loader_fast.cpp.omv~	2024-01-09 21:01:43.219783447 +0100
++++ zorba-3.1/src/store/naive/loader_fast.cpp	2024-01-09 21:02:17.155992189 +0100
+@@ -100,7 +100,7 @@ XmlLoader::~XmlLoader()
+ /*******************************************************************************
+ 
+ ********************************************************************************/
+-void XmlLoader::error(void* ctx, xmlErrorPtr error)
++void XmlLoader::error(void* ctx, const xmlError *error)
+ {
+   if ( error->level == XML_ERR_NONE )
+     return;
+diff -up zorba-3.1/src/store/naive/loader.h.omv~ zorba-3.1/src/store/naive/loader.h
+--- zorba-3.1/src/store/naive/loader.h.omv~	2024-01-09 21:03:00.816260724 +0100
++++ zorba-3.1/src/store/naive/loader.h	2024-01-09 21:03:09.780315864 +0100
+@@ -111,7 +111,7 @@ public:
+       const zstring& docUri,
+       std::istream& xmlStream) = 0;
+ 
+-  static void error( void *ctx, xmlErrorPtr );
++  static void error( void *ctx, const xmlError* );
+ };
+ 
+ 
+diff -up zorba-3.1/src/util/icu_regex.cpp.omv~ zorba-3.1/src/util/icu_regex.cpp
+--- zorba-3.1/src/util/icu_regex.cpp.omv~	2024-01-09 21:01:14.019603832 +0100
++++ zorba-3.1/src/util/icu_regex.cpp	2024-01-09 21:01:19.463637323 +0100
+@@ -759,7 +759,7 @@ bool regex::replace_all( string const &i
+   matcher_->reset( in );
+   UErrorCode status = U_ZERO_ERROR;
+   *out = matcher_->replaceAll( replacement, status );
+-  return U_SUCCESS( status ) == TRUE;
++  return U_SUCCESS( status ) == true;
+ }
+ 
+ bool regex::replace_all( char const *in, char const *replacement,
+diff -up zorba-3.1/src/util/locale.cpp.omv~ zorba-3.1/src/util/locale.cpp
+--- zorba-3.1/src/util/locale.cpp.omv~	2024-01-09 20:48:14.770808894 +0100
++++ zorba-3.1/src/util/locale.cpp	2024-01-09 20:48:21.386849620 +0100
+@@ -26,7 +26,7 @@
+ # include <clocale>
+ # include <cstdlib>                     /* for getenv(3) */
+ # include <langinfo.h>                  /* for nl_langinfo(3) */
+-# include <xlocale.h>                   /* for newlocale(3) */
++# include <locale.h>                    /* for newlocale(3) */
+ #endif /* WIN32 */
+ 
+ // Zorba
+diff -up zorba-3.1/src/util/unicode_util.cpp.omv~ zorba-3.1/src/util/unicode_util.cpp
+--- zorba-3.1/src/util/unicode_util.cpp.omv~	2024-01-09 20:49:20.863215797 +0100
++++ zorba-3.1/src/util/unicode_util.cpp	2024-01-09 20:49:24.711239486 +0100
+@@ -2244,7 +2244,7 @@ bool normalize( string const &in, normal
+     default                 : icu_mode = UNORM_NONE; break;
+   }
+   Normalizer::normalize( in, icu_mode, 0, *out, status );
+-  return U_SUCCESS( status ) == TRUE;
++  return U_SUCCESS( status ) == true;
+ }
+ 
+ bool strip_diacritics( string const &in, string *out ) {
+@@ -2266,7 +2266,7 @@ bool to_char( char const *in, char_type
+     u_strFromUTF8WithSub(
+       out, 1, nullptr, in, utf8::char_length( *in ), SubChar, nullptr, &status
+     );
+-    return U_SUCCESS( status ) == TRUE;
++    return U_SUCCESS( status ) == true;
+   }
+   catch ( utf8::invalid_byte const& ) {
+     return false;
+@@ -2312,7 +2312,7 @@ bool to_string( char const *in, size_typ
+   UErrorCode status = U_ZERO_ERROR;
+   u_strFromUTF8( buf, in_len + 1, &buf_len, in, in_len, &status );
+   out->releaseBuffer( buf_len );
+-  return U_SUCCESS( status ) == TRUE;
++  return U_SUCCESS( status ) == true;
+ }
+ 
+ bool to_string( wchar_t const *in, size_type in_len, string *out ) {
+@@ -2321,7 +2321,7 @@ bool to_string( wchar_t const *in, size_
+   size_type buf_len;
+   u_strFromWCS( buf, in_len + 1, &buf_len, in, in_len, &status );
+   out->releaseBuffer( buf_len );
+-  return U_SUCCESS( status ) == TRUE;
++  return U_SUCCESS( status ) == true;
+ }
+ 
+ #endif /* ZORBA_NO_ICU */

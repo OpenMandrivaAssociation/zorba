@@ -1,0 +1,177 @@
+diff --git a/src/runtime/full_text/icu_tokenizer.cpp b/src/runtime/full_text/icu_tokenizer.cpp
+--- a/src/runtime/full_text/icu_tokenizer.cpp
++++ b/src/runtime/full_text/icu_tokenizer.cpp
+@@ -145,7 +145,7 @@
+   UErrorCode status = U_ZERO_ERROR;
+ 
+   word_it_.reset(
+-    dynamic_cast<RuleBasedBreakIterator*>(
++    dynamic_cast<icu::RuleBasedBreakIterator*>(
+       BreakIterator::createWordInstance( icu_locale, status )
+     )
+   );
+@@ -153,7 +153,7 @@
+     throw ZORBA_EXCEPTION( zerr::ZXQP0036_BREAKITERATOR_CREATION_FAILED );
+ 
+   sent_it_.reset(
+-    dynamic_cast<RuleBasedBreakIterator*>(
++    dynamic_cast<icu::RuleBasedBreakIterator*>(
+       BreakIterator::createSentenceInstance( Locale::getUS(), status )
+     )
+   );
+diff --git a/src/runtime/full_text/icu_tokenizer.h b/src/runtime/full_text/icu_tokenizer.h
+--- a/src/runtime/full_text/icu_tokenizer.h
++++ b/src/runtime/full_text/icu_tokenizer.h
+@@ -17,7 +17,7 @@
+ #ifndef ZORBA_FULL_TEXT_ICU_TOKENIZER_H
+ #define ZORBA_FULL_TEXT_ICU_TOKENIZER_H
+ 
+-#include <unicode/rbbi.h>               /* for RuleBasedBreakIterator */
++#include <unicode/rbbi.h>               /* for icu::RuleBasedBreakIterator */
+ 
+ #include <zorba/internal/cxx_util.h>
+ #include <zorba/internal/unique_ptr.h>
+@@ -52,7 +52,7 @@
+                         Callback&, Item const* );
+ 
+ private:
+-  typedef std::unique_ptr<RuleBasedBreakIterator> rbbi_ptr;
++  typedef std::unique_ptr<icu::RuleBasedBreakIterator> rbbi_ptr;
+ 
+   locale::iso639_1::type const lang_;
+   rbbi_ptr word_it_;
+diff --git a/src/util/utf8_util.h b/src/util/utf8_util.h
+--- a/src/util/utf8_util.h
++++ b/src/util/utf8_util.h
+@@ -921,7 +921,7 @@
+   unicode::to_string(s1, &us1);
+   unicode::to_string(s2, &us2);
+ 
+-  return static_cast<Collator*>( collation->getCollator() )->compare(us1, us2);
++  return static_cast<icu::Collator*>( collation->getCollator() )->compare(us1, us2);
+ #else
+   return s1.compare(s2);
+ #endif /* ZORBA_NO_ICU */
+@@ -954,13 +954,13 @@
+   }
+ 
+ #ifndef ZORBA_NO_ICU
+-  CollationKey collKey;
++  icu::CollationKey collKey;
+   UErrorCode status = U_ZERO_ERROR;
+ 
+   unicode::string uni_s;
+   unicode::to_string(s, &uni_s);
+ 
+-  static_cast<Collator*>(collation->getCollator())->
++  static_cast<icu::Collator*>(collation->getCollator())->
+   getCollationKey(uni_s, collKey, status);
+ 
+   if(U_FAILURE(status))
+diff --git a/src/zorbatypes/collation_manager.cpp b/src/zorbatypes/collation_manager.cpp
+--- a/src/zorbatypes/collation_manager.cpp
++++ b/src/zorbatypes/collation_manager.cpp
+@@ -64,7 +64,7 @@
+ 
+ XQPCollator::XQPCollator(void* aCollator, const std::string& aCollationURI, bool doMemCmp)
+   :
+-  theCollator((Collator*)aCollator),
++  theCollator((icu::Collator*)aCollator),
+   uri(aCollationURI),
+   theDoMemCmp(doMemCmp)
+ {
+@@ -73,7 +73,7 @@
+ 
+ XQPCollator::~XQPCollator()
+ {
+-  delete (Collator*)theCollator;
++  delete (icu::Collator*)theCollator;
+ }
+ 
+ const std::string& XQPCollator::getURI() const
+@@ -113,17 +113,17 @@
+     return 0;
+   }
+   
+-  Collator* lCollator;
++  icu::Collator* lCollator;
+ 
+ #ifndef ZORBA_NO_ICU
+   UErrorCode lError = U_ZERO_ERROR;
+   if (lTokens.size() == 2) 
+   {
+-    lCollator = Collator::createInstance(Locale(lTokens[1].c_str()), lError);
++    lCollator = icu::Collator::createInstance(icu::Locale(lTokens[1].c_str()), lError);
+   }
+   else 
+   {
+-    lCollator = Collator::createInstance(Locale(lTokens[1].c_str(),
++    lCollator = icu::Collator::createInstance(icu::Locale(lTokens[1].c_str(),
+                                                 lTokens[2].c_str()),
+                                          lError);
+   }
+@@ -134,37 +134,37 @@
+   }
+ 
+ #else
+-  lCollator = new Collator;
++  lCollator = new icu::Collator;
+ #endif /* ZORBA_NO_ICU */
+ 
+   if (lTokens[0].compare("PRIMARY") == 0) 
+   {
+ #ifndef ZORBA_NO_ICU
+-    lCollator->setStrength(Collator::PRIMARY);
++    lCollator->setStrength(icu::Collator::PRIMARY);
+ #endif /* ZORBA_NO_ICU */
+   }
+   else if (lTokens[0].compare("SECONDARY") == 0) 
+   {
+ #ifndef ZORBA_NO_ICU
+-    lCollator->setStrength(Collator::SECONDARY);
++    lCollator->setStrength(icu::Collator::SECONDARY);
+ #endif /* ZORBA_NO_ICU */
+   }
+   else if (lTokens[0].compare("TERTIARY") == 0) 
+   {
+ #ifndef ZORBA_NO_ICU
+-    lCollator->setStrength(Collator::TERTIARY);
++    lCollator->setStrength(icu::Collator::TERTIARY);
+ #endif /* ZORBA_NO_ICU */
+   }
+   else if (lTokens[0].compare("QUATERNARY") == 0) 
+   {
+ #ifndef ZORBA_NO_ICU
+-    lCollator->setStrength(Collator::QUATERNARY);
++    lCollator->setStrength(icu::Collator::QUATERNARY);
+ #endif /* ZORBA_NO_ICU */
+   }
+   else if (lTokens[0].compare("IDENTICAL") == 0) 
+   {
+ #ifndef ZORBA_NO_ICU
+-    lCollator->setStrength(Collator::IDENTICAL);
++    lCollator->setStrength(icu::Collator::IDENTICAL);
+ #endif /* ZORBA_NO_ICU */
+   }
+   else
+@@ -179,16 +179,16 @@
+ XQPCollator*
+ CollationFactory::createCollator()
+ {
+-  Collator* lCollator;
++  icu::Collator* lCollator;
+ #ifndef ZORBA_NO_ICU
+   UErrorCode lError = U_ZERO_ERROR;
+-  lCollator = Collator::createInstance(Locale("en", "US"), lError); 
++  lCollator = icu::Collator::createInstance(icu::Locale("en", "US"), lError); 
+   if( U_FAILURE(lError) ) {
+     assert(false);
+   }
+-  lCollator->setStrength(Collator::IDENTICAL);
++  lCollator->setStrength(icu::Collator::IDENTICAL);
+ #else
+-  lCollator = new Collator;
++  lCollator = new icu::Collator;
+ #endif /* ZORBA_NO_ICU */
+   return new XQPCollator(lCollator, (std::string)"");
+ }

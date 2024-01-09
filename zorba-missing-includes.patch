@@ -1,12 +1,22 @@
-Index: zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp
-===================================================================
---- zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp
-+++ zorba-0.9.21/src/zorbatypes/utf8/xqpString.cpp	2010-02-08 18:26:58.490071261 +0200
-@@ -15,6 +15,7 @@
-  */
- #include <unicode/regex.h>
- #include <memory>
-+#include <cstdio>
- #include "zorbatypes/xqpstring.h"
+diff --git a/include/zorba/iterator.h b/include/zorba/iterator.h
+--- a/include/zorba/iterator.h
++++ b/include/zorba/iterator.h
+@@ -18,6 +18,7 @@
  
- #ifndef ZORBA_NO_UNICODE
+ // standard
+ #include <cassert>
++#include <type_traits>
+ 
+ // Zorba
+ #include <zorba/api_shared_types.h>
+diff --git a/modules/http-client/json/http-client.xq.src/http_client.cpp b/modules/http-client/json/http-client.xq.src/http_client.cpp
+--- a/modules/http-client/json/http-client.xq.src/http_client.cpp
++++ b/modules/http-client/json/http-client.xq.src/http_client.cpp
+@@ -21,6 +21,7 @@
+   #include <time.h>
+ #endif
+ 
++#include <algorithm>
+ #include <curl/curl.h>
+ #include <map>
+ #include <zorba/serializer.h>

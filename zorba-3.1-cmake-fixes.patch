@@ -1,0 +1,51 @@
+diff -up zorba-3.1/CMakeConfiguration.txt.omv~ zorba-3.1/CMakeConfiguration.txt
+diff -up zorba-3.1/CMakeLists.txt.omv~ zorba-3.1/CMakeLists.txt
+--- zorba-3.1/CMakeLists.txt.omv~	2024-01-09 20:06:21.206825785 +0100
++++ zorba-3.1/CMakeLists.txt	2024-01-09 20:10:50.564699271 +0100
+@@ -40,6 +40,10 @@ IF(COMMAND cmake_policy)
+   cmake_policy(SET CMP0002 OLD)
+   # We want CMake to correctly count empty list elements.
+   cmake_policy(SET CMP0007 NEW)
++  # Get rid of a slew of warnings
++  cmake_policy(SET CMP0012 OLD)
++  cmake_policy(SET CMP0026 OLD)
++  cmake_policy(SET CMP0153 OLD)
+ ENDIF(COMMAND cmake_policy)
+ 
+ IF("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+diff -up zorba-3.1/modules/util-curl/CMakeLists.txt.omv~ zorba-3.1/modules/util-curl/CMakeLists.txt
+--- zorba-3.1/modules/util-curl/CMakeLists.txt.omv~	2024-01-09 20:13:49.781893897 +0100
++++ zorba-3.1/modules/util-curl/CMakeLists.txt	2024-01-09 20:14:01.909973636 +0100
+@@ -22,7 +22,7 @@ ELSE (ZORBA_SUPPRESS_CURL)
+ 
+   IF (CURL_FOUND)
+     MESSAGE(STATUS "Found cURL library -- " ${CURL_LIBRARIES})
+-    INCLUDE_DIRECTORIES(BEFORE SYSTEM "${CURL_INCLUDE_DIR}")
++    #INCLUDE_DIRECTORIES(BEFORE SYSTEM "${CURL_INCLUDE_DIR}")
+     SET(requiredlibs ${requiredlibs} "${CURL_LIBRARIES}")
+ 
+     SET(ZORBA_PROJECT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
+diff -up zorba-3.1/test/sax2/CMakeLists.txt.omv~ zorba-3.1/test/sax2/CMakeLists.txt
+--- zorba-3.1/test/sax2/CMakeLists.txt.omv~	2024-01-09 20:08:46.347849323 +0100
++++ zorba-3.1/test/sax2/CMakeLists.txt	2024-01-09 20:08:52.243890159 +0100
+@@ -25,7 +25,7 @@ SET(TESTCOUNTER 0)
+ FOREACH(TESTFILE ${TESTFILES})
+ 
+  STRING(LENGTH ${TESTFILE} TESTFILELENGTH)
+- MATH(EXPR TESTLENGTH '${TESTFILELENGTH}-3' )
++ MATH(EXPR TESTLENGTH "${TESTFILELENGTH}-3" )
+  STRING(SUBSTRING ${TESTFILE} 0 ${TESTLENGTH} TESTNAME)
+ 
+  SET (TESTNAME "test/sax2/${TESTNAME}")
+diff -up zorba-3.1/test/update/CMakeLists.txt.omv~ zorba-3.1/test/update/CMakeLists.txt
+--- zorba-3.1/test/update/CMakeLists.txt.omv~	2024-01-09 20:08:22.755685398 +0100
++++ zorba-3.1/test/update/CMakeLists.txt	2024-01-09 20:08:32.411752594 +0100
+@@ -25,7 +25,7 @@ SET (_results_dir "${CMAKE_CURRENT_BINAR
+ FOREACH(TESTFILE ${TESTFILES})
+ 
+  STRING(LENGTH ${TESTFILE} TESTFILELENGTH)
+- MATH(EXPR TESTLENGTH '${TESTFILELENGTH}-5' )
++ MATH(EXPR TESTLENGTH "${TESTFILELENGTH}-5" )
+  STRING(SUBSTRING ${TESTFILE} 0 ${TESTLENGTH} TESTNAME)
+ 
+  IF (TESTNAME MATCHES "^w3c_update_testsuite")
