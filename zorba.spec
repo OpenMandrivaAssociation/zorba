@@ -12,7 +12,7 @@ Version:	3.1
 Release:	1
 Group:		System/Libraries
 License:	Apache License
-URL:		http://www.zorba-xquery.com/
+URL:		https://www.zorba-xquery.com/
 Source0:	https://github.com/28msec/zorba/archive/refs/tags/%{version}.tar.gz
 Patch0:		zorba-3.1-cmake-fixes.patch
 Patch1:		https://src.fedoraproject.org/rpms/zorba/raw/f29/f/zorba-icu-namespace.patch
